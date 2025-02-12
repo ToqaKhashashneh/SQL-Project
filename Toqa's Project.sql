@@ -1,5 +1,7 @@
-Create Database LibraryManagementSystem;
-Use LibraryManagementSystem
+Create DataBase ToqaLibraryManagementSystem 
+
+use ToqaLibraryManagementSystem
+
  Create Table Books 
  ( 
    ID INT PRIMARY KEY IDENTITY,
@@ -193,7 +195,7 @@ VALUES
    ID INT PRIMARY KEY IDENTITY,
    Amount Decimal ,
    PaymentStatus Varchar (255) ,
-   BorrowingID int,
+   BorrowingID int unique,
    FOREIGN KEY (BorrowingID) REFERENCES Borrowing(ID), 
  );
 
@@ -284,24 +286,27 @@ inner join Reservations On Members.ID = Reservations.MemberID
 
 --6 Write an SQL query to find members who have borrowed the book titled "SQL for Beginners".
 
+
 Select *
 From Members
 inner join Borrowing On Members.ID = Borrowing.MemberID
-inner join Books On Books.ID = Borrowing.MemberID
+inner join Books On Books.ID = Borrowing.BookID
 where Books.Title = 'SQL for Beginners';
 
 --7 Write an SQL query to find all members who have borrowed and returned the book titled "C# Programming".
 Select *
 From Members
 inner join Borrowing On Members.ID = Borrowing.MemberID
-inner join Books On Books.ID = Borrowing.MemberID
+inner join Books On Books.ID = Borrowing.BookID
 where Books.Title = 'C# Programming' and ReturnDate is not null;
+
+
 
 --8 Write an SQL query to find members who have returned books after the due date.
 Select *
 From Members
 inner join Borrowing On Members.ID = Borrowing.MemberID
-inner join Books On Books.ID = Borrowing.MemberID
+inner join Books On Books.ID = Borrowing.BookID
 where ReturnDate > DueDate;
 
 
@@ -318,12 +323,14 @@ Select *
 From Borrowing
 inner join Members on Members.ID = Borrowing.MemberID
 where BorrowingDate  BETWEEN '2024-01-01' AND '2024-01-10';
+ 
 
 --11 Write an SQL query to count the total number of books available in the library.
 
-SELECT COUNT(*) AS TotalBooks
+SELECT COUNT(Books.ID) AS TotalBooks
 FROM Books
 where Books.AvailabilityStatus='Available';
+
 
 --12 Write an SQL query to find members who have borrowed books but not returned them yet.
 
